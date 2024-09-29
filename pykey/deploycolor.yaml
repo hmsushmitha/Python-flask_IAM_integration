@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-keycloak-app-81
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-keycloak-app-81
+  template:
+    metadata:
+      labels:
+        app: flask-keycloak-app-81
+    spec:
+      containers:
+      - name: flask-keycloak-app-81
+        image: sushmitha1806/python:97
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV
+          value: "production"

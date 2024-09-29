@@ -1,0 +1,35 @@
+version: '3.8'
+
+
+
+services:
+  flask_app:
+    build: .
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.2
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=color.py
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.4
+    command: start-dev
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.3
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - flask_app
+
+networks:
+  custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
